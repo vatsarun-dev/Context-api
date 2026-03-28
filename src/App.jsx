@@ -4,7 +4,7 @@ import Dashboard from "./components/Dashboard";
 
 const App = () => {
   return (
-    <div className="bg-[#fff4ef] min-h-screen">
+    <div className="bg-[#0c0d0f] min-h-screen text-white">
       <NavBar />
       <Dashboard />
     </div>

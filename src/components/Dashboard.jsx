@@ -1,69 +1,59 @@
-import React from "react";
+import React, { useContext } from "react";
+import SessionForm from "./SessionForm.jsx";
+import SessionList from "./SessionList.jsx";
+import { SessionContext } from "../context/SessionContext.jsx";
 
 const Dashboard = () => {
+  const { sessions } = useContext(SessionContext);
+  const totalDuration = sessions.reduce(
+    (sum, session) => sum + (Number(session.duration) || 0),
+    0
+  );
+
+  const todayLabel = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "2-digit",
+    year: "numeric",
+  });
+
   return (
-    <div className="min-h-screen text-black  flex flex-col items-center gap-3 w-full p-4">
-      <div>
-        <img
-          className="h-[400px] w-[900px] object-cover mx-auto block border rounded-3xl "
-          alt=""
-          src="https://i.pinimg.com/1200x/a7/c4/c2/a7c4c26906ea7602cf14587f5f1e0bed.jpg"
-        />
-      </div>
-
-      <div className="h-[450px] w-[350px] bg-white p-4  ">
-        <div className="flex gap-4 justify-center">
-          <div>
-            <img
-              className="w-[40px]"
-              src="https://img.icons8.com/?size=512&id=15427&format=png"
-              alt=""
-            />
-          </div>
-          <h1 className="font-bold text-xl text-black">Schedule Planning</h1>
+    <div className="min-h-screen text-white flex flex-col items-center w-full px-6 pb-12 pt-8">
+      <div className="w-full max-w-6xl flex flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <div className="text-2xl font-semibold">Dashboard</div>
+          <div className="text-sm text-[#7a828f]">{todayLabel}</div>
         </div>
-        <form action="" className="bg-gray-200">
-          <div className="flex flex-col">
-            <label htmlFor="">Topic</label>
-            <input
-              className="border rounded bg-[#fff4ef] h-[40px]"
-              type="text"
-            />
-          </div>
-          <div className="flex ">
-            <div className="flex flex-col">
-              <label htmlFor="">Subject</label>
-              <input
-                className="border rounded bg-[#fff4ef] w-[96%] "
-                type="text"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="">Duration</label>
-              <input
-                className="border rounded bg-[#fff4ef] w-[96%]"
-                type="text"
-              />
-            </div>
-          </div>
 
-          <div className="flex ">
-            <div className="flex flex-col">
-              <label htmlFor="">Priority</label>
-              <input
-                className="border rounded bg-[#fff4ef] w-[96%]"
-                type="text"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="">Date</label>
-              <input
-                className="border rounded bg-[#fff4ef] w-[96%]"
-                type="text"
-              />
-            </div>
+        <div className="grid gap-4 md:grid-cols-4">
+          <div className="bg-[#d9c7ff] text-[#17191f] rounded-2xl p-4 flex flex-col gap-3 card-3d fade-up float-soft">
+            <div className="text-sm">Sessions Created</div>
+            <div className="text-2xl font-semibold">{sessions.length}</div>
+            <div className="text-xs text-[#4b4f5a]">+2 vs last week</div>
           </div>
-        </form>
+          <div className="bg-[#15171d] border border-[#23252c] rounded-2xl p-4 flex flex-col gap-3 card-3d fade-up">
+            <div className="text-sm text-[#c9ced8]">Total Duration</div>
+            <div className="text-2xl font-semibold">{totalDuration} min</div>
+            <div className="text-xs text-[#6f7785]">Across all sessions</div>
+          </div>
+          <div className="bg-[#15171d] border border-[#23252c] rounded-2xl p-4 flex flex-col gap-3 card-3d fade-up">
+            <div className="text-sm text-[#c9ced8]">Priority Mix</div>
+            <div className="text-2xl font-semibold">
+              {sessions.filter((s) => s.priority === "High").length}
+              <span className="text-sm text-[#6f7785]"> high</span>
+            </div>
+            <div className="text-xs text-[#6f7785]">Focus on high impact</div>
+          </div>
+          <div className="bg-[#15171d] border border-[#23252c] rounded-2xl p-4 flex flex-col gap-3 card-3d fade-up">
+            <div className="text-sm text-[#c9ced8]">Next Focus</div>
+            <div className="text-2xl font-semibold">10 min</div>
+            <div className="text-xs text-[#6f7785]">Warm‑up block</div>
+          </div>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+          <SessionForm />
+          <SessionList />
+        </div>
       </div>
     </div>
   );
